@@ -1,0 +1,65 @@
+##
+# Operational services to run the application in your local or Outrigger Cloud environment.
+#
+# To ensure this works as expected for multiple environments, both environment
+# settings must be carefully respected in *every* command invocation:
+#
+# * The `DOCKER_ENV` environment variable which is used as a template parameter for
+#   how this configuration is used.
+# * The -p|--project-name option for Docker Compose, which uses the provided name
+#   in lieu of deriving key Docker namespacing from whatever the current directory
+#   happens to be named. You can also set the COMPOSE_PROJECT_NAME environment variable.
+#
+# Warning: Multiple environments for local use require customizing the DNSDock
+# Configuration. A generic approach for this has not yet been determined.
+#
+# @see https://docs.docker.com/compose/reference/overview/
+# @see https://docs.docker.com/compose/compose-file/compose-file/
+##
+version: '3.1'
+
+services:
+  # Database service
+  db:
+    container_name: madness_${DOCKER_ENV:-local}_db
+    image: outrigger/mariadb:10.1
+    environment:
+      MYSQL_DATABASE: madness_drupal
+      # This is used by the nginx-proxy service which is part of Phase2's Outrigger hosting platform.
+      # Outrigger Cloud as a hosting platform is still for Phase2 internal use only.
+      # Add a VIRTUAL_PORT to access the service externally over port 80.
+      VIRTUAL_HOST: db-${DOCKER_ENV:-local}-madness.undefined
+    volumes:
+      - /data/madness/${DOCKER_ENV:-local}/mysql:/var/lib/mysql
+    network_mode: "bridge"
+    labels:
+      com.dnsdock.name: db
+      com.dnsdock.image: madness
+      outrigger.project: madness
+  
+  # Main Application service.
+  www:
+    container_name: madness_${DOCKER_ENV:-local}_www
+    image: outrigger/apache-php:php70
+    network_mode: "bridge"
+    environment:
+      DOCROOT: /var/www/build/html
+      PHP_MAX_EXECUTION_TIME: 60
+      PHP_XDEBUG: "true"
+      PHP_XHPROF: "true"
+      # Include the DOCKER_ENV so Drupal settings can be aware of environment.
+      DOCKER_ENV: ${DOCKER_ENV:-local}
+      # This is used by the nginx-proxy service which is part of Phase2's Outrigger Cloud hosting.
+      # Outrigger Cloud as a hosting platform is still for Phase2 internal use only.
+      VIRTUAL_HOST: ${DOCKER_ENV:-local}-madness.undefined
+    links:
+      - db
+    volumes:
+      # Main code volume mount.
+      - .:/var/www
+      # /var/www/src is used for consistency with the build container.
+      - /data/madness/${DOCKER_ENV:-local}/files:/var/www/src/sites/default/files
+    labels:
+      com.dnsdock.name: www
+      com.dnsdock.image: madness
+      outrigger.project: madness

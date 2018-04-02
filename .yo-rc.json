@@ -1,0 +1,25 @@
+{
+  "generator-outrigger-drupal": {
+    "skipWelcome": true,
+    "skipGoodbye": true,
+    "insight": false,
+    "skipInstall": true,
+    "skip-install": true,
+    "namespace": "outrigger-drupal:app",
+    "_": [],
+    "skip-cache": false,
+    "projectName": "madness",
+    "projectDescription": "Madness Drupal codebase.",
+    "drupalDistro": "drupal",
+    "drupalDistroVersion": "8.x",
+    "hosting": "outrigger",
+    "webserver": "apache",
+    "cacheInternal": "database",
+    "proxyCache": "none",
+    "mail": "none",
+    "domain": "madness",
+    "gitRepoUrl": "git@bitbucket.org:phase2tech/madness.git",
+    "useCloud": false,
+    "usePLS": false
+  }
+}
