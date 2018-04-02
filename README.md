@@ -4,7 +4,11 @@
 
 <!-- Insert short paragraph describing the project's architecture and where to find more information. -->
 
+## Quick Start
+* Run `rig project setup` to do an initial build of the site.
+* Run `rig project build` to do any rebuilds (when adding new contrib modules, etc).
 
+** Note: ** This project is just to provide a Drupal environment in which to build the Madness module, which is maintained in a separate repo.
 
 ## About This Repository
 
@@ -24,25 +28,6 @@ and operational management of the application code. A build process downloads an
 
 Thank you for helping the project with a problem. For local issues please read
 the [OUTRIGGER.md](./docs/OUTRIGGER.md) documentation. 
-
-## Running without Docker
-
-### Requirements
-
-* [Node.js](https://nodejs.com) v6 via a [package manager](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager) or [standalone installer](http://nodejs.org/download/)
-* [Grunt](https://gruntjs.org) (`npm install -g grunt-cli`)
-* PHP 5.6
-* [Composer](https://getcomposer.org/download) (e.g. `brew install composer`)
-
-### Installation
-
-* **`npm install`:** Retrieve build system dependencies.
-* **`grunt`:** Validate and assemble functional Drupal codebase.
-* **`drush si`:** From inside the Drupal docroot.
-
-### Get Oriented
-
-* To learn about available commands run `grunt help`.
 
 ## Scaffolded with Generators
 
