@@ -27,3 +27,6 @@ node_modules
 
 # Site Content
 /src/sites/*/files
+
+# Exclude the Madness module
+src/modules/madness
